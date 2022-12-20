@@ -12,7 +12,7 @@ def create_db(cur):
                     id SERIAL PRIMARY KEY,
                     first_name VARCHAR(40) NOT NULL,
                     last_name VARCHAR(40) NOT NULL,
-                    email VARCHAR(40) UNIQUE
+                    email VARCHAR(60) UNIQUE
                 );
                 CREATE TABLE IF NOT EXISTS clients_phones(
                     id SERIAL PRIMARY KEY,
@@ -94,16 +94,16 @@ def search_client(cur, **data):
     return cur.fetchall()
 
 
-with psycopg2.connect(database="clients_db", user="postgres", password="1234") as conn:
+with psycopg2.connect(database="clients_db", user="postgres", password="postgres") as conn:
     with conn.cursor() as cur:
         drop_table(cur, 'clients_phones', 'clients')
         create_db(cur)
-        add_client(cur, 'Ivan', 'Ivanov', 'iban@ng.ru', '+79999999999')
-        add_phone(cur, '1', '+78889999999')
+        add_client(cur, 'Dmitry', 'Ivanov', '123@321.ru', '+71234567891')
+        add_phone(cur, '1', '+78889991122')
         change_client(cur, 1)
-        delete_phone(cur, '+78889999999')
-        # find_client(cur, first_name='Ivan')
-        client = search_client(cur, first_name='Ivan', phones='+79999999999')
+        delete_phone(cur, '+78889991122')
+        # find_client(cur, first_name='Dmitry')
+        client = search_client(cur, first_name='Dmitry', phones='+71234567891')
         print(client)
         conn.commit()
 
